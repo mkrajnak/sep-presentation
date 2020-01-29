@@ -2,7 +2,7 @@
 \usepackage{newcent}
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
-%\usepackage[T1]{fontenc}
+\usepackage[T1]{fontenc}
 \usepackage{hyperref}
 \usepackage{fancyvrb}
 \usetheme{FIT}
@@ -30,11 +30,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title[Martin Krajňák - SEP]{Automatické generování testů pro GNOME GUI aplikace z metadat AT-SPI}
 
-\author[]{Martin Krajňák}
+\author[]{Bc. Martin Krajňák}
 
-\institute[]{Brno University of Technology, Faculty of Information Technology\\
-Bo\v{z}et\v{e}chova 1/2. 612 66 Brno - Kr\'alovo Pole\\
-xkrajn02@fit.vutbr.cz}
+\institute[]{
+
+}
+\institute[]{
+xkrajn02@fit.vutbr.cz
+\\
+Vedúci práce: prof. Ing. Tomáš Vojnar, Ph.D. 
+\\
+Zadávateľ:   Red Hat Czech s.r.o.}
 
 %\institute[]{Fakulta informačních technologií
 %Vysokého učení technického v Brně\\
@@ -44,8 +50,8 @@ xkrajn02@fit.vutbr.cz}
 % České logo - Czech logo
 % beamerouterthemeFIT.sty řádek 9: fitlogo1_cz
 
-\date{January 26, 2020}
-%\date{\today}
+% \date{January 26, 2020}
+\date{\today}
 %\date{} % bez data / without date
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,24 +63,21 @@ xkrajn02@fit.vutbr.cz}
 \begin{frame}\frametitle{Cieľ práce}
    
     
-    \begin{block}{Nástroj na automatické generovanie automatizovaných testov}
+    \begin{block}{\vspace{2mm}\textbf{Nástroj na automatické generovanie automatizovaných testov}\vspace{2mm}}
 
     \begin{itemize}
-    \item Systematické vytvorenie testov na základe dostupných vykonateľných akcií GUI aplikácie
-        \begin{itemize}
-        \item Testovanie častí nepokrytých manuálnym testovaním
-        \item Vytvorenie testov vhodných na regresné testovanie počas vývoja aplikácie (aktualizácia backendu)
+    \item \textbf{Systematické vytvorenie testov na základe dostupných vykonateľných akcií GUI aplikácie}
+    \vspace{5mm}
+    \item \textbf{Využitie vstavenej podpory asistenčných technológii pre GTK/GNOME aplikácie}
+    \vspace{5mm}
+    \item \textbf{Využitie technológie OCR}
+    \begin{itemize}
+        \item \emph{rozpoznávanie znakov/textu z obrázkov}
     \end{itemize}
-
-    \item Využitie vstavenej podpory asistenčných technológii pre GTK/GNOME aplikácie
-    \item Využitie technológie OCR
-        \begin{itemize}
-            \item Open Source technológia vyvíjaná Google
-            \item rozpoznávanie znakov/textu z obrázkov
-            \item verifikácia skutočného obsahu zobrazeného v aplikácii
-        \end{itemize}
-    \item zjednodušenie/zrýchlenie procesu vývoja a údržby automatizovaných testov
-    \item rýchle zistenie závažných chýb 
+    \vspace{5mm}
+    \item \textbf{Zjednodušenie/zrýchlenie procesu vývoja a údržby automatizovaných testov}
+    \vspace{5mm}
+    \item \textbf{Rýchle zistenie závažných chýb} 
     \end{itemize}
 
     \end{block}
@@ -82,18 +85,21 @@ xkrajn02@fit.vutbr.cz}
 
 \begin{frame}\frametitle{Technológia AT-SPI a jej rozhrania}
     \begin{itemize}
-        \item hlboko vstavaná do frameworku GTK, prítomná vo všetkých aplikáciach využívajúce grafické prvky GTK prípadne ich varianty
-        \item ponúka strom prvkov aplikácie a ich:
+        \item \textbf{AT-SPI je hlboko vstavaná do frameworku GTK, prítomná vo všetkých aplikáciach využívajúce grafické prvky GTK, prípadne ich varianty}
+        \vspace{5mm}
+
+        \item \textbf{AT-SPI ponúka strom prvkov aplikácie a ich:}
+        \emph{\begin{itemize}
+            \item \emph{pozíciu}
+            \item \emph{viditeľnosť}
+            \item \emph{vykonateľné udalosti/akcie}
+            \item \emph{viditeľný text}
+        \end{itemize}}
+        \vspace{5mm}
+        \item \textbf{Dostupnosť AT-SPI prvkov v jazyku Python3 cez knižnice:}
         \begin{itemize}
-            \item pozíciu
-            \item viditeľnosť
-            \item vykonateľné udalosti/akcie
-            \item viditeľný text
-        \end{itemize}
-        \item dostupnosť prvkov v jazyku Python3 cez knižnice:
-        \begin{itemize}
-            \item pyatspi
-            \item dogtail
+            \item \emph{pyatspi}
+            \item \emph{dogtail}
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -106,22 +112,24 @@ xkrajn02@fit.vutbr.cz}
 \end{frame}
 
 
-\begin{frame}\frametitle{Extrakcia Modelu, Generovanie testov}
+\begin{frame}\frametitle{Extrakcia modelu, Generovanie testov}
 \begin{enumerate}
-    \item Vytvorenie abstraktného modelu aplikácie na základe dát dostupných z AT-SPI
+    \item \textbf{Vytvorenie abstraktného modelu na základe dát AT-SPI:}
         \begin{enumerate}
-        \item spustenie aplikácie
-        \item zmapovanie udalostí dostupných v súčasnom stave
-        \item postupné vytvorenie grafu udalostí (Control Flow/Event Flow graph)
+        \item \emph{spustenie aplikácie}
+        \item \emph{zmapovanie udalostí dostupných v súčasnom stave}
+        \item \emph{postupné vytvorenie grafu udalostí (Event Flow graph)}
     \end{enumerate}
-    \item Výber a vykonanie udalosti
-    \item Overovanie stavu aplikácie
+    \vspace{5mm}
+    \item \textbf{Výber a vykonanie udalosti cez rozhrania AT-SPI}
+    \vspace{5mm}
+    \item \textbf{Overovanie stavu aplikácie}
     \begin{itemize}
-        \item sledovanie chýb
-        \item kontrola behu, detekcia nových okien, dialógov
-        \item kontrola zobrazenia určitých prvkov cez AT-SPI, OCR (z ang. assertion) 
+        \item \emph{sledovanie chýb, kontrola behu, detekcia nových okien}
+        \item \emph{kontrola zobrazenia určitých prvkov cez AT-SPI, OCR}
     \end{itemize}
-    \item Vygenerovanie kroku testu (behave step)
+    \vspace{5mm}
+    \item \textbf{Vygenerovanie kroku testu \textit{(behave step)}}
 \end{enumerate}
 
     \begin{figure}[h]
@@ -132,22 +140,19 @@ xkrajn02@fit.vutbr.cz}
 
 
 \begin{frame}\frametitle{Výzvy}
-    \begin{enumerate}
-        \item určenie optimálneho konca testu (dĺžka sekvencie udalostí)
+    \textbf{\begin{itemize}
+        \item určenie optimálneho konca testu (dĺžky sekvencie udalostí)
+        \vspace{5mm}
         \item vyhodnotenie pokrytia udalostí testami
+        \vspace{5mm}
         \item detekcia a začlenenie novo vzniknutých časti stromu počas generovania
-        \item detekcia zmien v strome medzi jednotlivými udalosťami
-        \item filtrovanie dialógov(výber súboru zo súborového systému, výber tlačiarne, otvorenie webovej stránky)
-        \begin{itemize}
-            \item vytvorenie kópie celého/časti stromu len s konkrétnymi vlastnosťami 
-        \end{itemize}
+        \vspace{5mm}
         \item reakcie na chyby počas generovania/označenie chyby aby sa jej generátor vyhol
-        \item začlenenie klávesových skratiek do testov
-        \item začlenenie ostatných udalostí(pravý klik, položky kontextového menu)
-    \end{enumerate}
+    \end{itemize}
+    }
 \end{frame}
 
-\begin{frame}[fragile]\frametitle{Ukážka testu}
+\begin{frame}[fragile]\frametitle{Ukážka jednoduchého testu - baobab}
 
 \begin{lstlisting}[language=Gherkin]
 
